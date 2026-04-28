@@ -260,6 +260,39 @@ body {
   background: linear-gradient(to right, #64748b, #475569);
   /* Jasniejszy szary/niebieski dla reszki */
 }
+
+.accuracy-section {
+  margin-top: 1.5rem; /* Odstęp od paska orzeł/reszka */
+  padding-top: 1rem;
+  border-top: 1px solid var(--glass-border);
+}
+
+.accuracy-label {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.8rem;
+  margin-bottom: 0.5rem;
+  color: var(--text-muted);
+}
+
+.accuracy-value {
+  color: var(--success); /* Zielony kolor dla celności */
+  font-weight: 800;
+}
+
+.accuracy-track {
+  height: 6px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.accuracy-fill {
+  height: 100%;
+  background: var(--success);
+  transition: width 0.6s ease-out;
+  box-shadow: 0 0 10px rgba(74, 222, 128, 0.3);
+}
 .feedback-badge.correct { background: rgba(74, 222, 128, 0.1); color: var(--success); border: 1px solid var(--success); }
 .feedback-badge.incorrect { background: rgba(248, 113, 113, 0.1); color: var(--error); border: 1px solid var(--error); }
 

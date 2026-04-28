@@ -16,7 +16,7 @@ export default function App() {
 
   const doFlip = () => {
     if (!guess || isFlipping) return;
-    
+
     setIsFlipping(true);
     setLastCorrect(null);
     setAnimKey((k) => k + 1);
@@ -42,20 +42,20 @@ export default function App() {
     const n = i + 1;
     const prob = 100 / Math.pow(2, n);
     const display = prob >= 1 ? prob.toFixed(prob % 1 === 0 ? 0 : 2) : prob.toFixed(3);
-    return { n,
-       display,
-        isAchieved: n <= streak, 
-        isCurrent: n === streak,
-         isNext: n === streak + 1 };
+    return { n, display, isCurrent: n === streak, isNext: n === streak + 1 };
   });
 
   const lastTenStats = (() => {
-    if (history.length === 0) return { heads: 0, tails: 0 };
-    const headsCount = history.filter(h => h.result === HEADS).length;
+    if (history.length === 0) return { heads: 50, tails: 50, accuracy: 0 };
+
+    const headsCount = history.filter((h) => h.result === HEADS).length;
     const tailsCount = history.length - headsCount;
+    const correctCount = history.filter((h) => h.correct).length;
+
     return {
       heads: Math.round((headsCount / history.length) * 100),
-      tails: Math.round((tailsCount / history.length) * 100)
+      tails: Math.round((tailsCount / history.length) * 100),
+      accuracy: Math.round((correctCount / history.length) * 100),
     };
   })();
 
@@ -64,7 +64,6 @@ export default function App() {
       <div className="max-width-container">
         <div className="header">
           <h1 className="header-title">Rzut Monetą</h1>
-          <p className="header-subtitle"></p>
         </div>
 
         <div className="main-layout">
@@ -72,7 +71,7 @@ export default function App() {
             {/* Sekcja Monety */}
             <div key={animKey} className={`coin-base ${isFlipping ? "coin-spin" : result !== null ? "pop-in" : ""}`}>
               {isFlipping ? (
-                <div className="flipping-text">ORZEŁ<br/>RESZKA</div>
+                <div className="flipping-text">ORZEŁ<br />RESZKA</div>
               ) : result === null ? (
                 <>
                   <div className="placeholder-q">?</div>
@@ -135,7 +134,7 @@ export default function App() {
                 <span className="gold-text">{maxStreak}</span>
               </div>
             </div>
-
+            
             <div className="card">
               <p className="card-title">Szansa na trafienie</p>
               {probRows.map(({ n, display, isCurrent, isNext }) => (
@@ -145,22 +144,32 @@ export default function App() {
                 </div>
               ))}
             </div>
+
             <div className="card">
-              <p className="card-title">Ostatnie {history.length} rzutów</p>
+              <p className="card-title">Statystyki (Ostatnie {history.length})</p>
+              
+              {/* Pasek Orzeł vs Reszka */}
               <div className="stats-bar-container">
                 <div className="stats-bar-labels">
                   <span>Orzeł: {lastTenStats.heads}%</span>
                   <span>Reszka: {lastTenStats.tails}%</span>
                 </div>
                 <div className="stats-bar-track">
-                  <div 
-                    className="stats-bar-fill heads" 
-                    style={{ width: `${lastTenStats.heads}%` }}
-                  ></div>
-                  <div 
-                    className="stats-bar-fill tails" 
-                    style={{ width: `${lastTenStats.tails}%` }}
-                  ></div>
+                  <div className="stats-bar-fill heads" style={{ width: `${lastTenStats.heads}%` }}></div>
+                  <div className="stats-bar-fill tails" style={{ width: `${lastTenStats.tails}%` }}></div>
+                </div>
+              </div>
+
+              
+
+              {/* Sekcja Skuteczności */}
+              <div className="accuracy-section">
+                <div className="accuracy-label">
+                  <span>Skuteczność typowania:</span>
+                  <span className="accuracy-value">{lastTenStats.accuracy}%</span>
+                </div>
+                <div className="accuracy-track">
+                  <div className="accuracy-fill" style={{ width: `${lastTenStats.accuracy}%` }}></div>
                 </div>
               </div>
             </div>
